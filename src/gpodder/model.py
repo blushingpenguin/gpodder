@@ -452,6 +452,15 @@ class PodcastEpisode(PodcastModelObject):
 
         return task.status in (task.DOWNLOADING, task.QUEUED, task.PAUSING, task.PAUSED, task.CANCELLING)
 
+    @property
+    def downloading_paused(self):
+        task = self.download_task
+        if task is None:
+            return False
+
+        return task.status == task.PAUSED
+
+
     def check_is_new(self):
         return (self.state == gpodder.STATE_NORMAL and self.is_new and
                 not self.downloading)

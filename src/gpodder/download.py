@@ -389,7 +389,8 @@ class DownloadQueueWorker(object):
                 break
             logger.info('%s is processing: %s', self, task)
             task.run()
-            task.recycle()
+            if task.status != task.PAUSED:
+                task.recycle()
 
         self.exit_callback(self)
 
